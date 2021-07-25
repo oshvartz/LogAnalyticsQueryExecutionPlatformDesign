@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LogAnalyticsQueryExecutionPlatform.Contracts
 {
-    public interface IQueryResultProcessor
+    public interface IQueryResultProcessor<T>
     {
-        Task<ProcessingResult> ProcessQueryResultsAsync(QueryResults queryResults);
+        Task<ProcessingResult> ProcessQueryResultsAsync(QueryResults queryResults, JobInvocation<T> jobInvocation);
     }
 }
