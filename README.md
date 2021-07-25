@@ -1,0 +1,2 @@
+# LogAnalyticsQueryExecutionPlatformDesign
+Log Analytics Query Execution Platform
