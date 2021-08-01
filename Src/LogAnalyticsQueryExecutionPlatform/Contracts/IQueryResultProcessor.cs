@@ -9,6 +9,6 @@ namespace LogAnalyticsQueryExecutionPlatform.Contracts
 {
     public interface IQueryResultProcessor<T>
     {
-        Task ProcessQueryResultsAsync(QueryResults queryResults, IJobExecutionContext<T> jobInvocation,CancellationToken cancellationToken);
+        Task ProcessQueryResultsAsync(QueryResults queryResults, JobExecutionContext<T> jobInvocation,CancellationToken cancellationToken);
     }
 }

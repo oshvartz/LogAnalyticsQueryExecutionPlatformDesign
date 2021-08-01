@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace LogAnalyticsQueryExecutionPlatform.Impl
 {
-    public abstract class LogAnalyticsQueryExecutionWorker<T>
+    public abstract class LogAnalyticsQueryExecutionWorker<T> : ILogAnalyticsQueryExecutionWorker
     {
         protected abstract IQueryResultProcessor<T> QueryResultProcessor { get; }
         protected abstract IQueryDefinitionBuilder<T> QueryDefinitionBuilder { get; }
+        public string JobType => typeof(T).FullName;
 
         private async Task ProcessMessage(object message, CancellationToken cancellationToken)
         {
-            IJobExecutionContext<T> jobExecutionContext = ReadContext(message);
+            JobExecutionContext<T> jobExecutionContext = ReadContext(message);
             var queryDefinition =  await QueryDefinitionBuilder.BuildAsync(jobExecutionContext, cancellationToken);
             try
             {
@@ -40,9 +41,21 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
             throw new NotImplementedException();
         }
 
-        private IJobExecutionContext<T> ReadContext(object message)
+        private JobExecutionContext<T> ReadContext(object message)
         {
             throw new NotImplementedException();
+        }
+
+        public Task StartAsync()
+        {
+            //start listening to queue by job type
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync()
+        {
+            //stop listening to queue by job type
+            return Task.CompletedTask;
         }
     }
 }

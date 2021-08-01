@@ -9,6 +9,6 @@ namespace LogAnalyticsQueryExecutionPlatform.Contracts
 {
     public interface IQueryDefinitionBuilder<T>
     {
-        Task<QueryDefinition> BuildAsync(IJobExecutionContext<T> jobInvocation,CancellationToken cancellationToken);
+        Task<QueryDefinition> BuildAsync(JobExecutionContext<T> jobInvocation,CancellationToken cancellationToken);
     }
 }
