@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace LogAnalyticsQueryExecutionPlatform.Contracts
 {
-    public interface IQueryResultProcessor<T>
+    public interface IQueryDefinitionBuilder<T>
     {
-        Task ProcessQueryResultsAsync(QueryResults queryResults, IJobExecutionContext<T> jobInvocation,CancellationToken cancellationToken);
+        Task<QueryDefinition> BuildAsync(IJobExecutionContext<T> jobInvocation,CancellationToken cancellationToken);
     }
 }

@@ -8,8 +8,8 @@ namespace LogAnalyticsQueryExecutionPlatform.DataModel
     {
         int RetryCount { get; }
         string FireInstanceId { get; }
-        DateTime FireLogicTimeUtc { get; }
-        DateTime FireActualTimeUtc { get; }
+        DateTime? FireLogicTimeUtc { get; }  //will be datetime.UtcNow for ad-hoc trigger
+        DateTime FireActualTimeUtc { get; } 
         JobDefinition<T> JobDefinition { get; }
     }
 }
