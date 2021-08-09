@@ -12,17 +12,18 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
     {
         protected abstract IQueryResultProcessor<T> QueryResultProcessor { get; }
         protected abstract IQueryDefinitionBuilder<T> QueryDefinitionBuilder { get; }
-        public string JobType => typeof(T).FullName;
+        public abstract string JobType { get; } //must match job type used in the API
 
+        //will be hooked to SB queue by JobType
         private async Task ProcessMessage(object message, CancellationToken cancellationToken)
         {
-            JobExecutionContext<T> jobExecutionContext = ReadContext(message);
-            var queryDefinition =  await QueryDefinitionBuilder.BuildAsync(jobExecutionContext, cancellationToken);
+            JobExecutionContext<T> jobExecutionContext = ReadContext(message);            
             try
             {
+                var queryDefinition = await QueryDefinitionBuilder.BuildAsync(jobExecutionContext, cancellationToken);
+                //will handle LA errors
                 var queryResults = await ExecuteQueryAsync(queryDefinition);
                 await QueryResultProcessor.ProcessQueryResultsAsync(queryResults, jobExecutionContext, cancellationToken);
-
             }
             catch(Exception ex)
             {
@@ -38,7 +39,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
 
         private Task<QueryResults> ExecuteQueryAsync(QueryDefinition queryDefinition)
         {
-            throw new NotImplementedException();
+            return Task.FromResult<QueryResults>(new QueryResults());
         }
 
         private JobExecutionContext<T> ReadContext(object message)

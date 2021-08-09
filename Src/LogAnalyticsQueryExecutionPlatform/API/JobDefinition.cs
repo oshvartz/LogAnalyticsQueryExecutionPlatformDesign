@@ -7,8 +7,8 @@ namespace LogAnalyticsQueryExecutionPlatform.API
 {
     public class JobDefinition
     {
-        public string JobId { get; set; }
-        public string JobType { get; set; }
-        public JObject JobData { get; set; }
+        public string JobId { get; set; } //rule id
+        public string JobType { get; set; } // Scheduled/Nrt/AlertGenertor/AlertPublish
+        public JObject JobData { get; set; } // the data model
     }
 }

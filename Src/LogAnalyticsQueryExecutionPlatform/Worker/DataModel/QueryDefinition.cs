@@ -9,5 +9,9 @@ namespace LogAnalyticsQueryExecutionPlatform.DataModel
         public string Query { get; set; }
         public TimeSpan? QueryTimeout { get; set; }
         public Identity Identity { get; set; }
+        public DateTime QueryStartTimeUtc { get; set; }
+
+        public DateTime QueryEndTimeUtc { get; set; }
+
     }
 }
