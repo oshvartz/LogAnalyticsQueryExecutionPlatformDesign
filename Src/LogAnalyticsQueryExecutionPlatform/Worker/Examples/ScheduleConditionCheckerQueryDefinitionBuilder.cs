@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyticsQueryExecutionPlatform.Worker.Examples
 {
-    class AlertGenerationQueryDefinitionBuilder : IQueryDefinitionBuilder<AlertGenerationDataModel>
+    class ScheduleConditionCheckerQueryDefinitionBuilder : IQueryDefinitionBuilder<AlertGenerationDataModel>
     {
         private static readonly TimeSpan LogAnalyticsLatency = TimeSpan.FromMinutes(5);
 
@@ -17,16 +17,20 @@ namespace LogAnalyticsQueryExecutionPlatform.Worker.Examples
             var queryDefinition = new QueryDefinition
             {
                 Identity = jobExecutionContext.JobDefinition.JobData.Identity,
-                Query = BuildEnrichmentQuery(jobExecutionContext.JobDefinition.JobData.Query),
-                QueryStartTimeUtc = jobExecutionContext.JobDefinition.JobData.QueryStartTimeUtc,
-                QueryEndTimeUtc = jobExecutionContext.JobDefinition.JobData.QueryEndTimeUtc,
-                //QueryTimeout = jobExecutionContext.RetryCount > 5 ? 
+                Query = BuildCount(jobExecutionContext.JobDefinition.JobData.Query),
+                QueryStartTimeUtc = jobExecutionContext.FireLogicTimeUtc - LogAnalyticsLatency - jobExecutionContext.JobDefinition.JobData.Windows
+                QueryEndTimeUtc = jobExecutionContext.FireLogicTimeUtc - LogAnalyticsLatency
             };
 
-            return Task.FromResult<QueryDefinition>(queryDefinition);
+            return private string BuildCount(string query)
+        {
+            throw new NotImplementedException();
         }
 
-        private string BuildEnrichmentQuery(string query)
+        Task.FromResult<QueryDefinition>(queryDefinition);
+        }
+
+        private string BuildCount(string query)
         {
             throw new NotImplementedException();
         }

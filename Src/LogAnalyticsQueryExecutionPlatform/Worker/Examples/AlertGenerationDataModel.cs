@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LogAnalyticsQueryExecutionPlatform.Worker.Examples
 {
-    class AlertGenerationDataModel
+    public class AlertGenerationDataModel
     {
         public Identity Identity { get; set; }
         public string Query { get; set; }

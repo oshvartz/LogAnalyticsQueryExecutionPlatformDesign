@@ -8,19 +8,15 @@ using System.Threading.Tasks;
 
 namespace LogAnalyticsQueryExecutionPlatform.Worker.Examples
 {
-    public class AlertGenerationQueryResultProcessor : IQueryResultProcessor<AlertGenerationDataModel>
+    public class ScheduleConditionCheckerQueryResultProcessor : IQueryResultProcessor<AlertGenerationDataModel>
     {
         //private readonly
         public async Task ProcessQueryResultsAsync(QueryResults queryResults, JobExecutionContext<AlertGenerationDataModel> jobExecutionContext, CancellationToken cancellationToken)
         {
-            var alerts = GenerateAlerts(queryResults, jobExecutionContext);
-            //publish to HE
-
+            //check condition
+            //if condition met:ILogAnalyticsQueryExecutionPlatform.UpsertJob
         }
 
-        private object GenerateAlerts(QueryResults queryResults, JobExecutionContext<AlertGenerationDataModel> jobExecutionContext)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

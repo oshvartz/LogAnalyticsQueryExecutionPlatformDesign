@@ -18,7 +18,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
 
         public async Task StartAsync()
         {
-            _logAnalyticsQueryExecutionWorkers.ToList().ForEach(async worker => await worker.StartAsync());
+          _logAnalyticsQueryExecutionWorkers.ToList().ForEach(async worker => await worker.StartAsync());
         }
     }
 }
