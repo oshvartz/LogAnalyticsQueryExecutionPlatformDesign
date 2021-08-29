@@ -18,16 +18,11 @@ namespace LogAnalyticsQueryExecutionPlatform.Worker.Examples
             {
                 Identity = jobExecutionContext.JobDefinition.JobData.Identity,
                 Query = BuildCount(jobExecutionContext.JobDefinition.JobData.Query),
-                QueryStartTimeUtc = jobExecutionContext.FireLogicTimeUtc - LogAnalyticsLatency - jobExecutionContext.JobDefinition.JobData.Windows
+                // QueryStartTimeUtc = jobExecutionContext.FireLogicTimeUtc - LogAnalyticsLatency - jobExecutionContext.JobDefinition.JobData.Windows
                 QueryEndTimeUtc = jobExecutionContext.FireLogicTimeUtc - LogAnalyticsLatency
             };
 
-            return private string BuildCount(string query)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task.FromResult<QueryDefinition>(queryDefinition);
+            return Task.FromResult<QueryDefinition>(queryDefinition);
         }
 
         private string BuildCount(string query)

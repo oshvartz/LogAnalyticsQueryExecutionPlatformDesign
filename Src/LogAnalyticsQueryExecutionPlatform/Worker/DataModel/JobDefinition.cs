@@ -6,9 +6,9 @@ namespace LogAnalyticsQueryExecutionPlatform.DataModel
 {
     public class JobDefinition<T>
     {
-        public string JobId { get; set; }
-        public string JobType { get; set; }
-        public T JobData { get; set; }
-        public JobScheduling JobScheduling { get; set; } //could be null for ad-hoc
+        public string JobId { get; init; }
+        public string JobType { get; init; }
+        public T JobData { get; init; }
+        public JobScheduling JobScheduling { get; init; } //could be null for ad-hoc
     }
 }
