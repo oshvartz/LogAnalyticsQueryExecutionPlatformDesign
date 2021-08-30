@@ -19,8 +19,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
         // connection string to your Service Bus namespace
         static string connectionString = "<NAMESPACE CONNECTION STRING>";
 
-        // name of your Service Bus queue
-        static string queueName = "<QUEUE NAME>";
+        
         private readonly ServiceBusClient _serviceBusClient;
         private ServiceBusProcessor _serviceBusProcessor;
         private ServiceBusSender _serviceBusSender;
@@ -97,12 +96,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
 
 
         }
-
-        private Task HandleRetryAsync(Exception ex)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         private Task<QueryResults> ExecuteQueryAsync(QueryDefinition queryDefinition)
         {
             return Task.FromResult<QueryResults>(new QueryResults());

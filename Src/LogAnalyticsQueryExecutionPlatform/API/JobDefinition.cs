@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace LogAnalyticsQueryExecutionPlatform.API
 {
@@ -9,6 +9,6 @@ namespace LogAnalyticsQueryExecutionPlatform.API
     {
         public string JobId { get; set; } //rule id
         public string JobType { get; set; } // ConditionChecker - Scheduled/Nrt/AlertGenertor
-        public JObject JobData { get; set; } // the data model
+        public JsonDocument JobData { get; set; } // the data model
     }
 }
