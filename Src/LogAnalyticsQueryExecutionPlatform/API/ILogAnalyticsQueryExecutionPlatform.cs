@@ -15,8 +15,12 @@ namespace LogAnalyticsQueryExecutionPlatform.API
         /// <param name="jobScheduling">scheduling or null if should run immediately</param>
         /// <param name="cancellationToken">cancellation token</param>
         /// <returns></returns>
-        Task UpsertJob(JobDefinition jobDefinition, JobScheduling jobScheduling, CancellationToken cancellationToken);
+        Task UpsertJob(JobDescription jobDescription, CancellationToken cancellationToken);
 
-        //delete and get
+        
+        Task<JobDescription> GetJob(JobDefinitionIdentity jobDefinitionIdentity);
+
+
+        Task<bool> DeleteJob(JobDefinitionIdentity jobDefinitionIdentity);
     }
 }

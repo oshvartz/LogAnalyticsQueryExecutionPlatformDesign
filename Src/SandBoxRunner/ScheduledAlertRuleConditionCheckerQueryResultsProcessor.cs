@@ -13,7 +13,9 @@ namespace SandBoxRunner
     {
         public Task ProcessQueryResultsAsync(QueryResults queryResults, JobExecutionContext<ScheduledAlertRuleConditionCheckActorModel> jobInvocation, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            //check if condition met
+            //if yes create alert generation job
+            return Task.CompletedTask;
         }
     }
 }

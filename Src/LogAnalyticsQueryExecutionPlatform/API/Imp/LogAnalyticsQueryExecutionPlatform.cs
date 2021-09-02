@@ -21,8 +21,20 @@ namespace LogAnalyticsQueryExecutionPlatform.API.Imp
             _serviceBusClient = new ServiceBusClient(connectionString);
         }
 
-        public async Task UpsertJob(JobDefinition jobDefinition, JobScheduling jobScheduling, CancellationToken cancellationToken)
+        public Task<bool> DeleteJob(JobDefinitionIdentity jobDefinitionIdentity)
         {
+            throw new NotImplementedException();
+        }
+
+        public Task<JobDescription> GetJob(JobDefinitionIdentity jobDefinitionIdentity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpsertJob(JobDescription jobDescription, CancellationToken cancellationToken)
+        {
+            var jobDefinition = jobDescription.JobDefinition;
+            var jobScheduling = jobDescription.JobScheduling;
             var serviceBusSender = _serviceBusClient.CreateSender(jobDefinition.JobType);
 
             ServiceBusMessage message = new ServiceBusMessage(jobDefinition.JobData.RootElement.GetRawText());

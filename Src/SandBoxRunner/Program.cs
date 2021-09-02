@@ -14,19 +14,29 @@ namespace SandBoxRunner
         static async Task Main(string[] args)
         {
             ILogAnalyticsQueryExecutionPlatform logAnalyticsQueryExecutionPlatform = new LogAnalyticsQueryExecutionPlatformImpl();
-            await logAnalyticsQueryExecutionPlatform.UpsertJob(new JobDefinition
+            await logAnalyticsQueryExecutionPlatform.UpsertJob(new JobDescription
             {
-                JobId = "15",
-                JobType = "ScheduledAlertRuleConditionCheck",
-                JobData = JsonDocument.Parse(JsonSerializer.Serialize<ScheduledAlertRuleConditionCheckActorModel>(new ScheduledAlertRuleConditionCheckActorModel
+                JobDefinition =
+                new JobDefinition
                 {
-                    Permissions = "per",
-                    Query = "query",
-                    DisplayName = "DisplayName"
-                }))
-            }, null, CancellationToken.None);
+                    JobId = "15",
+                    JobType = "ScheduledAlertRuleConditionCheck",
+                    JobData = JsonDocument.Parse(JsonSerializer.Serialize<ScheduledAlertRuleConditionCheckActorModel>(new ScheduledAlertRuleConditionCheckActorModel
+                    {
+                        Permissions = "per",
+                        Query = "query",
+                        DisplayName = "DisplayName"
+                    }))
+                }
+            }, CancellationToken.None);
 
-            var logAnalyticsQueryExecutionWorkerHost = new LogAnalyticsQueryExecutionWorkerHost(new ILogAnalyticsQueryExecutionWorker[] { });
+            var scheduledAlertRuleConditionCheckWorker = new ScheduledAlertRuleConditionCheckWorker(new ScheduledAlertRuleConditionCheckerQueryResultsProcessor(),
+                                                        new ScheduledAlertRuleConditionCheckerQueryDefinitonBuilder());
+
+            var logAnalyticsQueryExecutionWorkerHost = new LogAnalyticsQueryExecutionWorkerHost(new ILogAnalyticsQueryExecutionWorker[]
+            {
+                scheduledAlertRuleConditionCheckWorker
+            });
 
             await logAnalyticsQueryExecutionWorkerHost.StartAsync();
 
