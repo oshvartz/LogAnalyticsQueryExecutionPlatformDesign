@@ -90,6 +90,12 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
             }
 
             var queryDefinition = await QueryDefinitionBuilder.BuildAsync(jobExecutionContext, cancellationToken);
+
+            //build pipeline Should Skip -> auto disable -> LA Execution
+            var middleware =  new ShouldSkipQueryExecutionMiddleware<T>()
+                .SetNext(new AutoDisableQueryExecutionMiddleware<T>()
+                .SetNext(new LogAnalyticsQueryExecutionMiddleware<T>()));
+
             //will handle LA errors
             var queryResults = await ExecuteQueryAsync(queryDefinition);
             await QueryResultProcessor.ProcessQueryResultsAsync(queryResults, jobExecutionContext, cancellationToken);

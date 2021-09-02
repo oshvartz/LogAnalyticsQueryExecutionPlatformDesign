@@ -16,5 +16,7 @@ namespace LogAnalyticsQueryExecutionPlatform.API
         /// <param name="cancellationToken">cancellation token</param>
         /// <returns></returns>
         Task UpsertJob(JobDefinition jobDefinition, JobScheduling jobScheduling, CancellationToken cancellationToken);
+
+        //delete and get
     }
 }
