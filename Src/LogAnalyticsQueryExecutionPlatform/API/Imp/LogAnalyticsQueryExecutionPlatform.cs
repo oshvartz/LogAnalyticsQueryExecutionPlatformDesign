@@ -1,6 +1,7 @@
 ﻿using Azure.Messaging.ServiceBus;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -12,7 +13,7 @@ namespace LogAnalyticsQueryExecutionPlatform.API.Imp
     public class LogAnalyticsQueryExecutionPlatformImpl : ILogAnalyticsQueryExecutionPlatform
     {
         // connection string to your Service Bus namespace
-        static string connectionString = "<NAMESPACE CONNECTION STRING>";
+        static string connectionString = "Endpoint=sb://ofshvart.servicebus.windows.net/;SharedAccessKeyName=Consumer;SharedAccessKey=AVp1zBBF1mOv7yWztn01o50dTgYKtaWziC0NevxFZj8=";
         private readonly ServiceBusClient _serviceBusClient;
 
 
@@ -37,7 +38,7 @@ namespace LogAnalyticsQueryExecutionPlatform.API.Imp
             var jobScheduling = jobDescription.JobScheduling;
             var serviceBusSender = _serviceBusClient.CreateSender(jobDefinition.JobType);
 
-            ServiceBusMessage message = new ServiceBusMessage(jobDefinition.JobData.RootElement.GetRawText());
+            ServiceBusMessage message = new ServiceBusMessage(ToJsonBinaryData(jobDefinition.JobData));
             var fireInstanceId = Guid.NewGuid().ToString();
             var fireLogicTimeUtc = DateTime.UtcNow;
             message.ApplicationProperties["FireLogicTimeUtc"] = fireLogicTimeUtc;
@@ -53,6 +54,17 @@ namespace LogAnalyticsQueryExecutionPlatform.API.Imp
             await serviceBusSender.SendMessageAsync(message, cancellationToken);
 
             await serviceBusSender.CloseAsync();
+        }
+
+        public static byte[] ToJsonBinaryData(JsonDocument jdoc)
+        {
+            using (var stream = new MemoryStream())
+            {
+                Utf8JsonWriter writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true });
+                jdoc.WriteTo(writer);
+                writer.Flush();
+                return stream.ToArray();
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
 
 
         // connection string to your Service Bus namespace
-        static string connectionString = "<NAMESPACE CONNECTION STRING>";
+        static string connectionString = "Endpoint=sb://ofshvart.servicebus.windows.net/;SharedAccessKeyName=Consumer;SharedAccessKey=AVp1zBBF1mOv7yWztn01o50dTgYKtaWziC0NevxFZj8=";
 
         
         private readonly ServiceBusClient _serviceBusClient;
@@ -61,8 +61,11 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
                 {
                     // Send a clone with a deferred wait of 5 seconds
                     ServiceBusMessage clone = new ServiceBusMessage(arg.Message);
+                    
                     clone.ScheduledEnqueueTime = DateTime.UtcNow.AddMinutes(1); //By retry policy
-                    clone.ApplicationProperties["RetryCount"] = retryCount + 1;
+                    retryCount = retryCount + 1;
+                    clone.ApplicationProperties["RetryCount"] = retryCount;
+                    clone.MessageId = $"{clone.MessageId}_{retryCount}";
                     await _serviceBusSender.SendMessageAsync(clone);
 
                     // Remove message from queue.
@@ -110,6 +113,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
 
         private JobExecutionContext<T> ReadContext(ServiceBusReceivedMessage message)
         {
+            var jobSchedulingStr = (string)message.ApplicationProperties["JobScheduling"];
             return new JobExecutionContext<T>
             {
                 FireActualTimeUtc = DateTime.UtcNow,
@@ -120,7 +124,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
                 {
                     JobId = (string)message.ApplicationProperties["JobId"],
                     JobData = message.Body.ToObjectFromJson<T>(),
-                    JobScheduling = JsonSerializer.Deserialize<JobScheduling>((string)message.ApplicationProperties["JobScheduling"])
+                    JobScheduling = string.IsNullOrEmpty(jobSchedulingStr) ? null : JsonSerializer.Deserialize<JobScheduling>(jobSchedulingStr)
                 }
             };
         }
@@ -128,7 +132,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
         public async Task StartAsync()
         {
             // create a processor that we can use to process the messages
-            _serviceBusProcessor = _serviceBusClient.CreateProcessor(JobType, new ServiceBusProcessorOptions() { AutoCompleteMessages = false, MaxConcurrentCalls = 5 });
+            _serviceBusProcessor = _serviceBusClient.CreateProcessor(JobType, new ServiceBusProcessorOptions() { AutoCompleteMessages = false, MaxConcurrentCalls = 1 });
             _serviceBusSender = _serviceBusClient.CreateSender(JobType);
             _serviceBusProcessor.ProcessMessageAsync += ProcessMessageAsync;
             _serviceBusProcessor.ProcessErrorAsync += ProcessErrorAsync;
