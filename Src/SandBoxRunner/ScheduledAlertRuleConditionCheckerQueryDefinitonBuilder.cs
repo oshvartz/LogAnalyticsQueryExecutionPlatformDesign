@@ -30,7 +30,7 @@ namespace SandBoxRunner
 
         private string BuildCount(string query)
         {
-            throw new NotImplementedException();
+            return query + "|count";
         }
     }
 }

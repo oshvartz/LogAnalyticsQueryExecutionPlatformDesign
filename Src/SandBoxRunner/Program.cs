@@ -25,7 +25,9 @@ namespace SandBoxRunner
                     {
                         Permissions = "per",
                         Query = "query",
-                        DisplayName = "DisplayName"
+                        DisplayName = "DisplayName",
+                        QueryStartTimeUtc = DateTime.UtcNow - TimeSpan.FromMinutes(5),
+                        QueryEndTimeUtc = DateTime.UtcNow
                     }))
                 }
             }, CancellationToken.None);

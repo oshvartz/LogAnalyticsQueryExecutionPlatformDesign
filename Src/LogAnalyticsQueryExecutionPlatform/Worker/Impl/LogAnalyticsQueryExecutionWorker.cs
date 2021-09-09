@@ -100,16 +100,11 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
                 .SetNext(new LogAnalyticsQueryExecutionMiddleware<T>()));
 
             //will handle LA errors
-            var queryResults = await ExecuteQueryAsync(queryDefinition);
+            var queryResults = new QueryResults();
+            await middleware.ExecuteQueryAsync(queryResults,queryDefinition,jobExecutionContext,cancellationToken);
             await QueryResultProcessor.ProcessQueryResultsAsync(queryResults, jobExecutionContext, cancellationToken);
-
-
         }
        
-        private Task<QueryResults> ExecuteQueryAsync(QueryDefinition queryDefinition)
-        {
-            return Task.FromResult<QueryResults>(new QueryResults());
-        }
 
         private JobExecutionContext<T> ReadContext(ServiceBusReceivedMessage message)
         {
