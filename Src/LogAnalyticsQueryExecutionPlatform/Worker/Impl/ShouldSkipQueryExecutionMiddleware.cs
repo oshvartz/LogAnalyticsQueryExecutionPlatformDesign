@@ -13,6 +13,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Worker.Impl
     {
         protected override Task<bool> ExecuteQueryInternalAsync(QueryResults queryResults, QueryDefinition queryDefinition, JobExecutionContext<T> jobExecutionContext, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"{DateTime.UtcNow} in ShouldSkipQueryExecutionMiddleware.ExecuteQueryInternalAsync");
             //if should skip return false
             //otherwise
             return Task.FromResult(true);

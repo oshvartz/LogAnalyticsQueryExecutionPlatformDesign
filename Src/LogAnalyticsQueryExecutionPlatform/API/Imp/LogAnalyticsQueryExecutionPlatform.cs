@@ -13,7 +13,7 @@ namespace LogAnalyticsQueryExecutionPlatform.API.Imp
     public class LogAnalyticsQueryExecutionPlatformImpl : ILogAnalyticsQueryExecutionPlatform
     {
         // connection string to your Service Bus namespace
-        static string connectionString = "Endpoint=sb://ofshvart.servicebus.windows.net/;SharedAccessKeyName=Consumer;SharedAccessKey=AVp1zBBF1mOv7yWztn01o50dTgYKtaWziC0NevxFZj8=";
+        static string connectionString = "XXXX";
         private readonly ServiceBusClient _serviceBusClient;
 
 
@@ -47,7 +47,12 @@ namespace LogAnalyticsQueryExecutionPlatform.API.Imp
             message.ApplicationProperties["JobId"] = jobDefinition.JobId;
             message.ApplicationProperties["JobScheduling"] = jobScheduling != null ? JsonSerializer.Serialize<JobScheduling>(jobScheduling) : string.Empty;
             message.ContentType = "application/json";
-            //message.PartitionKey 
+            //we will support on delay send in phase 1
+            if(jobScheduling?.SimpeleJobScheduling?.StartTimeUtc != null)
+            {
+                message.ScheduledEnqueueTime = jobScheduling.SimpeleJobScheduling.StartTimeUtc.Value;
+            }
+            
             //used for DDup
             message.MessageId = $"{ jobDefinition.JobType}_{jobDefinition.JobId}_{fireLogicTimeUtc.ToString("O")}";
 

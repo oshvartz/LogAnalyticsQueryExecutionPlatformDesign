@@ -15,6 +15,8 @@ namespace SandBoxRunner
 
         public Task<QueryDefinition> BuildAsync(JobExecutionContext<ScheduledAlertRuleConditionCheckActorModel> jobExecutionContext, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"{DateTime.UtcNow} in ScheduledAlertRuleConditionCheckerQueryDefinitonBuilder.BuildAsync");
+
             var queryEndTimeUtc = jobExecutionContext.FireLogicTimeUtc - LogAnalyticsLatency;
 
             var queryDefinition = new QueryDefinition

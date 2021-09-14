@@ -13,6 +13,7 @@ namespace SandBoxRunner
     {
         public Task ProcessQueryResultsAsync(QueryResults queryResults, JobExecutionContext<ScheduledAlertRuleConditionCheckActorModel> jobInvocation, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"{DateTime.UtcNow} in ScheduledAlertRuleConditionCheckerQueryResultsProcessor.ProcessQueryResultsAsync");
             //check if condition met
             //if yes create alert generation job
             return Task.CompletedTask;

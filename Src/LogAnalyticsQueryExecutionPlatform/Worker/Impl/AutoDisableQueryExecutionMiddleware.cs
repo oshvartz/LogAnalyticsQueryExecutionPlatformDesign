@@ -15,6 +15,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Worker.Impl
 
         public async Task ExecuteQueryAsync(QueryResults queryResults, QueryDefinition queryDefinition, JobExecutionContext<T> jobExecutionContext, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"{DateTime.UtcNow} in AutoDisableQueryExecutionMiddleware.ExecuteQueryAsync");
             try
             {
                 //check if need to disable if yes - finish return;

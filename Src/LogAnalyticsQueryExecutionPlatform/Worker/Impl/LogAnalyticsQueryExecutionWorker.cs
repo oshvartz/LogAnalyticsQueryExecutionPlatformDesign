@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
+using LogAnalyticsQueryExecutionPlatform.API;
 using LogAnalyticsQueryExecutionPlatform.Contracts;
 using LogAnalyticsQueryExecutionPlatform.DataModel;
 using LogAnalyticsQueryExecutionPlatform.Worker.Contracts;
@@ -17,7 +18,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
 
 
         // connection string to your Service Bus namespace
-        static string connectionString = "Endpoint=sb://ofshvart.servicebus.windows.net/;SharedAccessKeyName=Consumer;SharedAccessKey=AVp1zBBF1mOv7yWztn01o50dTgYKtaWziC0NevxFZj8=";
+        static string connectionString = "XXXX";
 
         
         private readonly ServiceBusClient _serviceBusClient;

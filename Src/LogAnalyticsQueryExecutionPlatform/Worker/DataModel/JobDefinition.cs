@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogAnalyticsQueryExecutionPlatform.API;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
