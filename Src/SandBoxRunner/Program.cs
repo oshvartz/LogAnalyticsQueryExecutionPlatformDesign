@@ -14,7 +14,7 @@ namespace SandBoxRunner
     {
         static async Task Main(string[] args)
         {
-            ILogAnalyticsQueryExecutionPlatform logAnalyticsQueryExecutionPlatform = new LogAnalyticsQueryExecutionPlatformImpl(new ServiceBusJobQueueSender());
+            ILogAnalyticsQueryExecutionPlatform logAnalyticsQueryExecutionPlatform = new LogAnalyticsQueryExecutionPlatformImpl(new InMemJobQueueSender());
             await logAnalyticsQueryExecutionPlatform.UpsertJob(new JobDescription
             {
                 JobDefinition =
@@ -33,7 +33,7 @@ namespace SandBoxRunner
                 }
             }, CancellationToken.None);
 
-            var scheduledAlertRuleConditionCheckWorker = new ScheduledAlertRuleConditionCheckWorker(new ServiceBusJobQueueListener<ScheduledAlertRuleConditionCheckActorModel>(), new ScheduledAlertRuleConditionCheckerQueryResultsProcessor(),
+            var scheduledAlertRuleConditionCheckWorker = new ScheduledAlertRuleConditionCheckWorker(new InMemJobQueueListener<ScheduledAlertRuleConditionCheckActorModel>(), new ScheduledAlertRuleConditionCheckerQueryResultsProcessor(),
                                                         new ScheduledAlertRuleConditionCheckerQueryDefinitonBuilder());
 
             var logAnalyticsQueryExecutionWorkerHost = new LogAnalyticsQueryExecutionWorkerHost(new ILogAnalyticsQueryExecutionWorker[]

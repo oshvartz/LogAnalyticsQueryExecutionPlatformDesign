@@ -13,7 +13,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Abstraction.Impl
 {
     public class ServiceBusJobQueueSender : IJobQueueSender
     {
-        static string connectionString = "XXXX";
+        static string connectionString = "XXXXX";
         private readonly ServiceBusClient _serviceBusClient;
         public ServiceBusJobQueueSender()
         {

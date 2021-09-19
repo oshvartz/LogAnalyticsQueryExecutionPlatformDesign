@@ -1,4 +1,5 @@
 ﻿using LogAnalyticsQueryExecutionPlatform.DataModel;
+using LogAnalyticsQueryExecutionPlatform.Worker.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Abstraction
 {
     public interface IJobQueueListener<T>
     {
-        Task StartProcessingAsync(string queueName, Func<JobExecutionContext<T>, CancellationToken, Task> processMessageHandler);
+        Task StartProcessingAsync(string queueName, IRetryPolicy retryPolicy,  Func<JobExecutionContext<T>, CancellationToken, Task> processMessageHandler);
 
         Task StopAsync();
 

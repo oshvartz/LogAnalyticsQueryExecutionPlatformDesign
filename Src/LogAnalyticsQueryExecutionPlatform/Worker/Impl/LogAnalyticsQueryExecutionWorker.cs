@@ -17,7 +17,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
     public abstract class LogAnalyticsQueryExecutionWorker<T> : ILogAnalyticsQueryExecutionWorker
     {
         private readonly IJobQueueListener<T> _jobQueueListener;
-        
+
         protected LogAnalyticsQueryExecutionWorker(IJobQueueListener<T> jobQueueListener)
         {
             _jobQueueListener = jobQueueListener;
@@ -28,7 +28,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
         protected abstract IQueryDefinitionBuilder<T> QueryDefinitionBuilder { get; }
         public abstract string JobType { get; } //must match job type used in the API
 
-        private async Task ProcessMessage(JobExecutionContext<T> jobExecutionContext,CancellationToken cancellationToken)
+        private async Task ProcessMessage(JobExecutionContext<T> jobExecutionContext, CancellationToken cancellationToken)
         {
             var queryDefinition = await QueryDefinitionBuilder.BuildAsync(jobExecutionContext, cancellationToken);
 
@@ -44,7 +44,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Impl
 
         public async Task StartAsync()
         {
-             await _jobQueueListener.StartProcessingAsync(JobType, ProcessMessage);
+            await _jobQueueListener.StartProcessingAsync(JobType, RetryPolicy, ProcessMessage);
         }
 
         public async Task StopAsync()

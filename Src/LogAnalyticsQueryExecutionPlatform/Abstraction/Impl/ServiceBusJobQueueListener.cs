@@ -2,6 +2,7 @@
 using LogAnalyticsQueryExecutionPlatform.API;
 using LogAnalyticsQueryExecutionPlatform.DataModel;
 using LogAnalyticsQueryExecutionPlatform.Impl;
+using LogAnalyticsQueryExecutionPlatform.Worker.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,8 @@ namespace LogAnalyticsQueryExecutionPlatform.Abstraction.Impl
 {
     public class ServiceBusJobQueueListener<T> : IJobQueueListener<T>
     {
-
-
         // connection string to your Service Bus namespace
-        static string connectionString = "XXXX";
-
+        static string connectionString = "XXXXX";
 
         private readonly ServiceBusClient _serviceBusClient;
         private ServiceBusProcessor _serviceBusProcessor;
@@ -30,7 +28,7 @@ namespace LogAnalyticsQueryExecutionPlatform.Abstraction.Impl
             _serviceBusClient = new ServiceBusClient(connectionString);
         }
 
-        public async Task StartProcessingAsync(string queueName, Func<JobExecutionContext<T>, CancellationToken, Task> processMessageHandler)
+        public async Task StartProcessingAsync(string queueName, IRetryPolicy retryPolicy, Func<JobExecutionContext<T>, CancellationToken, Task> processMessageHandler)
         {
             _processMessageHandler = processMessageHandler;
             // create a processor that we can use to process the messages

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LogAnalyticsQueryExecutionPlatform.Abstraction.Impl
@@ -19,14 +20,14 @@ namespace LogAnalyticsQueryExecutionPlatform.Abstraction.Impl
             queue.Add(message);
         }
 
-        public void StartListening(string queueName,Action<string> onMessage)
+        public void StartListening(string queueName,Func<string,Task> onMessageAsync)
         {
             var queue = _queues.GetOrAdd(queueName, _ => new BlockingCollection<string>());
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 foreach (string message in queue.GetConsumingEnumerable())
                 {
-                    onMessage(message);
+                    await onMessageAsync(message);
                 }
             });
             
