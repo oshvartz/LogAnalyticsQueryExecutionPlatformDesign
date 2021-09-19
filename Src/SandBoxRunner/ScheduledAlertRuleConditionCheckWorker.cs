@@ -1,4 +1,5 @@
-﻿using LogAnalyticsQueryExecutionPlatform.Contracts;
+﻿using LogAnalyticsQueryExecutionPlatform.Abstraction;
+using LogAnalyticsQueryExecutionPlatform.Contracts;
 using LogAnalyticsQueryExecutionPlatform.Impl;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,9 @@ namespace SandBoxRunner
         private readonly IQueryResultProcessor<ScheduledAlertRuleConditionCheckActorModel> _queryResultProcessor;
         private readonly IQueryDefinitionBuilder<ScheduledAlertRuleConditionCheckActorModel> _queryDefinitionBuilder;
 
-        public ScheduledAlertRuleConditionCheckWorker(IQueryResultProcessor<ScheduledAlertRuleConditionCheckActorModel> queryResultProcessor,
-            IQueryDefinitionBuilder<ScheduledAlertRuleConditionCheckActorModel> queryDefinitionBuilder)
+        public ScheduledAlertRuleConditionCheckWorker(IJobQueueListener<ScheduledAlertRuleConditionCheckActorModel> jobQueueListener,
+            IQueryResultProcessor<ScheduledAlertRuleConditionCheckActorModel> queryResultProcessor,
+            IQueryDefinitionBuilder<ScheduledAlertRuleConditionCheckActorModel> queryDefinitionBuilder): base(jobQueueListener)
         {
             _queryResultProcessor = queryResultProcessor;
             _queryDefinitionBuilder = queryDefinitionBuilder;

@@ -1,4 +1,5 @@
-﻿using LogAnalyticsQueryExecutionPlatform.API;
+﻿using LogAnalyticsQueryExecutionPlatform.Abstraction.Impl;
+using LogAnalyticsQueryExecutionPlatform.API;
 using LogAnalyticsQueryExecutionPlatform.API.Imp;
 using LogAnalyticsQueryExecutionPlatform.Contracts;
 using LogAnalyticsQueryExecutionPlatform.Impl;
@@ -13,7 +14,7 @@ namespace SandBoxRunner
     {
         static async Task Main(string[] args)
         {
-            ILogAnalyticsQueryExecutionPlatform logAnalyticsQueryExecutionPlatform = new LogAnalyticsQueryExecutionPlatformImpl();
+            ILogAnalyticsQueryExecutionPlatform logAnalyticsQueryExecutionPlatform = new LogAnalyticsQueryExecutionPlatformImpl(new ServiceBusJobQueueSender());
             await logAnalyticsQueryExecutionPlatform.UpsertJob(new JobDescription
             {
                 JobDefinition =
@@ -32,7 +33,7 @@ namespace SandBoxRunner
                 }
             }, CancellationToken.None);
 
-            var scheduledAlertRuleConditionCheckWorker = new ScheduledAlertRuleConditionCheckWorker(new ScheduledAlertRuleConditionCheckerQueryResultsProcessor(),
+            var scheduledAlertRuleConditionCheckWorker = new ScheduledAlertRuleConditionCheckWorker(new ServiceBusJobQueueListener<ScheduledAlertRuleConditionCheckActorModel>(), new ScheduledAlertRuleConditionCheckerQueryResultsProcessor(),
                                                         new ScheduledAlertRuleConditionCheckerQueryDefinitonBuilder());
 
             var logAnalyticsQueryExecutionWorkerHost = new LogAnalyticsQueryExecutionWorkerHost(new ILogAnalyticsQueryExecutionWorker[]
